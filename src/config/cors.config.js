@@ -4,7 +4,7 @@ const cors = require("cors");
 const allowedOrigins = [
   "http://localhost:4200", // Angular default dev port
   "http://localhost:5000", // Alternative Angular port
-  process.env.FRONTEND_URL, // Production frontend URL from environment
+  "https://blog-frontend-nu-drab.vercel.app"
 ].filter(Boolean); // Remove undefined values
 
 const corsOptions = {
@@ -12,18 +12,10 @@ const corsOptions = {
     // Allow requests with no origin (like mobile apps, Postman, or curl)
     if (!origin) return callback(null, true);
 
-    // In production, allow all origins if FRONTEND_URL is not set (for flexibility)
     // In development, check against allowedOrigins
     if (process.env.NODE_ENV === "production") {
-      // Allow all origins in production (you can restrict this if needed)
-      // Or check against allowedOrigins if FRONTEND_URL is set
-      if (allowedOrigins.length > 0 && allowedOrigins.indexOf(origin) === -1) {
-        // If FRONTEND_URL is set, only allow that origin
-        return callback(null, true); // For now, allow all in production
-      }
       return callback(null, true);
     } else {
-      // Development mode - check against allowedOrigins
       if (
         allowedOrigins.indexOf(origin) !== -1 ||
         process.env.NODE_ENV === "development"
