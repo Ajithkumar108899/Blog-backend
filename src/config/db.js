@@ -6,9 +6,17 @@ const connectDB = async () => {
       throw new Error("MONGO_URI is not defined in environment variables. Please set MONGO_URI in your Render environment variables.");
     }
 
-    // Warn if trying to use localhost in production
-    if (process.env.NODE_ENV === 'production' && process.env.MONGO_URI.includes('localhost')) {
-      console.warn("⚠️  WARNING: MONGO_URI contains 'localhost'. This will not work in production. Use MongoDB Atlas or a remote MongoDB instance.");
+    // Block localhost in production - it will never work
+    if (process.env.NODE_ENV === 'production') {
+      const mongoUri = process.env.MONGO_URI.toLowerCase();
+      if (mongoUri.includes('localhost') || mongoUri.includes('127.0.0.1') || mongoUri.includes('::1')) {
+        throw new Error(
+          "❌ ERROR: MONGO_URI cannot use localhost in production!\n" +
+          "   Please use MongoDB Atlas or a remote MongoDB instance.\n" +
+          "   Get your connection string from: https://cloud.mongodb.com\n" +
+          "   Format: mongodb+srv://username:password@cluster.mongodb.net/dbname"
+        );
+      }
     }
 
     console.log("Attempting to connect to MongoDB...");

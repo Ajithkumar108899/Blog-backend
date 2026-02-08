@@ -49,6 +49,13 @@ const startServer = async () => {
       console.error("\n❌ ERROR: MONGO_URI environment variable is not set!");
       console.error("Please add MONGO_URI to your Render environment variables.");
       console.error("Example: mongodb+srv://username:password@cluster.mongodb.net/dbname");
+      console.error("\n📖 How to get MongoDB Atlas connection string:");
+      console.error("   1. Go to https://cloud.mongodb.com");
+      console.error("   2. Create/Select your cluster");
+      console.error("   3. Click 'Connect' → 'Connect your application'");
+      console.error("   4. Copy the connection string");
+      console.error("   5. Replace <username> and <password> with your credentials");
+      console.error("   6. Add /blog_db at the end (or your database name)");
       process.exit(1);
     }
 
