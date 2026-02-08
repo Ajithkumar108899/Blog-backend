@@ -6,13 +6,9 @@ const connectDB = async () => {
       throw new Error("MONGO_URI is not defined in environment variables");
     }
 
-    const options = {
-      // Remove deprecated warnings
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    };
-
-    await mongoose.connect(process.env.MONGO_URI, options);
+    // Mongoose 9.x+ doesn't need useNewUrlParser or useUnifiedTopology
+    // These are handled automatically by the driver
+    await mongoose.connect(process.env.MONGO_URI);
     console.log("MongoDB connected successfully");
 
     // Handle connection events
