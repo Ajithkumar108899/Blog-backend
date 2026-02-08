@@ -16,6 +16,15 @@ app.use(cors);
 app.use(securityHeaders);
 app.use(morgan("dev"));
 
+// Health check endpoint (for Render and monitoring)
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Server is running",
+    timestamp: new Date().toISOString(),
+  });
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/blogs", blogRoutes);
@@ -25,13 +34,15 @@ const errorMiddleware = require("./src/middlewares/error.middleware");
 app.use(errorMiddleware);
 
 const PORT = process.env.PORT || 5000;
+const HOST = process.env.HOST || '0.0.0.0'; // Render requires 0.0.0.0
 
 // Connect to database and start server
 const startServer = async () => {
   try {
     await connectDB();
-    app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
+    app.listen(PORT, HOST, () => {
+      console.log(`Server running on http://${HOST}:${PORT}`);
+      console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
     });
   } catch (error) {
     console.error("Failed to start server:", error);
