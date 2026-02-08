@@ -2,9 +2,10 @@ const cors = require("cors");
 
 // Allowed origins for Angular frontend
 const allowedOrigins = [
-  "http://localhost:4200", // Angular default dev port
-  "http://localhost:5000", // Alternative Angular port
+  // "http://localhost:4200", // Angular default dev port
+  // "http://localhost:5000", // Alternative Angular port
   "https://blog-frontend-nu-drab.vercel.app"
+  // "http://localhost:5598/"
 ].filter(Boolean); // Remove undefined values
 
 const corsOptions = {
